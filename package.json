@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "nodemon src/index.ts",
     "build": "tsc --outDir ./build",
-    "start": "node build"
+    "start": "node build/src/index.js"
   },
   "keywords": [],
   "author": "Kinkando",
