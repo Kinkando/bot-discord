@@ -11,6 +11,7 @@ export type Config = {
 export const config: Config = {
     app: {
         port: Number(process.env.PORT || process.env.APP_PORT) || 3000,
+        host: process.env.APP_HOST!,
     },
     discord: {
         botToken: process.env.DISCORD_BOT_TOKEN!,
