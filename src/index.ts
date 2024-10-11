@@ -1,49 +1,23 @@
-import { Client, GatewayIntentBits } from 'discord.js'
-import { joinVoiceChannel, createAudioPlayer, createAudioResource, AudioPlayerStatus, DiscordGatewayAdapterCreator } from '@discordjs/voice';
+import express, { Request, Response } from 'express';
 import { config } from '../config/config';
+import { client } from './discord/discord';
 
-const client = new Client({
-    intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildVoiceStates],
-});
+const app = express();
 
-client.once('ready', () => {
-    console.log(`Logged in as ${client.user?.tag}`);
-});
-
-// Listen for voice state updates
-client.on('voiceStateUpdate', (oldState, newState) => {
-    // Check if a user has joined a voice channel
-    if (!oldState.channelId && newState.channelId && newState.guild.id === config.discord.guildID) {
-        const channel = newState.channel;
-
-        // Join the voice channel
-        const connection = joinVoiceChannel({
-            channelId: channel!.id,
-            guildId: newState.guild.id,
-            adapterCreator: newState.guild.voiceAdapterCreator as DiscordGatewayAdapterCreator,
-        });
-
-        // Create audio player
-        const audioPlayer = createAudioPlayer();
-
-        // Create an audio resource (replace with your audio file URL or path)
-        const resource = createAudioResource('assets/audio/joining.mp3'); // Update with actual path or URL
-
-        audioPlayer.play(resource);
-        connection.subscribe(audioPlayer);
-
-        audioPlayer.on(AudioPlayerStatus.Idle, (oldS, newS) => {
-            connection.disconnect();
-        });
-
-        audioPlayer.on('error', error => {
-            console.error(`Error: ${error.message}`);
-            connection.disconnect();
-        });
-
-        console.log(`${newState.member?.user.username} joined ${channel?.name}`);
-    }
-});
-
-// Log in to Discord
 client.login(config.discord.botToken);
+
+app.get('/health', (req: Request, res: Response) => {
+    res.status(200).json({ message: 'OK' });
+});
+
+app.get('/livez', (req: Request, res: Response) => {
+    res.status(200).json({ message: 'OK' });
+});
+
+app.get('/readyz', (req: Request, res: Response) => {
+    res.status(200).json({ message: 'OK' });
+});
+
+app.listen(config.app.port, () => {
+    console.log(`Server running at http://localhost:${config.app.port}`);
+});
