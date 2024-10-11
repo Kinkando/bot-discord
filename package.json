@@ -1,0 +1,26 @@
+{
+  "name": "bot-discord",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/index.ts",
+  "scripts": {
+    "dev": "nodemon src/index.ts",
+    "build": "tsc --outDir ./build",
+    "start": "node build"
+  },
+  "keywords": [],
+  "author": "Kinkando",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^22.7.5",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.6.3"
+  },
+  "dependencies": {
+    "@discordjs/voice": "^0.17.0",
+    "discord.js": "^14.16.3",
+    "dotenv": "^16.4.5",
+    "libsodium-wrappers": "^0.7.15",
+    "nodemon": "^3.1.7"
+  }
+}
