@@ -1,9 +1,8 @@
+import { VoiceState } from 'discord.js';
 import { joinVoiceChannel, createAudioPlayer, createAudioResource, AudioPlayerStatus, DiscordGatewayAdapterCreator } from '@discordjs/voice';
-import { client } from "./discord";
 import { config } from "../../config/config";
 
-// Listen for voice state updates
-client.on('voiceStateUpdate', (oldState, newState) => {
+export const voiceStateUpdate = (oldState: VoiceState, newState: VoiceState) => {
     // Check if a user has joined a voice channel
     if (!oldState.channelId && newState.channelId && newState.guild.id === config.discord.guildID) {
         const channel = newState.channel;
@@ -35,4 +34,4 @@ client.on('voiceStateUpdate', (oldState, newState) => {
 
         console.log(`${newState.member?.user.username} joined ${channel?.name}`);
     }
-});
+}
