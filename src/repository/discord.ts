@@ -1,6 +1,6 @@
 import { RedisClientType, RedisDefaultModules } from "redis";
+import { config } from "../config/config";
 import { VoiceChannelAudio } from "../types/discord";
-import { config } from "../../config/config";
 import { Map } from "../types/map";
 
 const prefixKey = `DISCORD`;

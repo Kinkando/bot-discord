@@ -1,5 +1,5 @@
 import { createClient, RedisClientType, RedisDefaultModules } from 'redis';
-import { config } from '../../config/config';
+import { config } from '../config/config';
 
 export async function newRedisConnection() {
     console.log(`connecting to redis: ${config.redis.host}:${config.redis.port}`);

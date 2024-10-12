@@ -4,7 +4,7 @@ import { schedule } from 'node-cron';
 import { newDiscord } from './discord/discord';
 import { closeRedisConnection, newRedisConnection } from './database/redis';
 import { DiscordRepository } from './repository/discord';
-import { config, resolveConfig } from '../config/config';
+import { config, resolveConfig } from './config/config';
 
 async function init() {
     await resolveConfig();

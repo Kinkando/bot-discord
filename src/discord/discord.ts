@@ -1,7 +1,7 @@
 import { Client, GatewayIntentBits, REST, Routes } from 'discord.js';
 import { interactionCreate, newDiscordCommands } from './commands';
 import { voiceStateUpdate } from './voice';
-import { config } from '../../config/config';
+import { config } from '../config/config';
 import { DiscordRepository } from '../repository/discord';
 
 async function newDiscord(discordRepository: DiscordRepository) {
@@ -17,7 +17,7 @@ async function newDiscord(discordRepository: DiscordRepository) {
 
     client.once('ready', () => console.log(`Logged in as ${client.user?.tag}`));
 
-    client.on('voiceStateUpdate', voiceStateUpdate);
+    client.on('voiceStateUpdate', voiceStateUpdate(discordRepository));
 
     client.on('interactionCreate', interactionCreate(commands));
 
