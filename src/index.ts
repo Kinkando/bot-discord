@@ -1,10 +1,12 @@
-import express, { Request, Response } from 'express';
-import { config } from '../config/config';
-import { client } from './discord/discord';
-import { schedule } from 'node-cron';
 import axios, { HttpStatusCode } from 'axios';
+import express, { Request, Response } from 'express';
+import { schedule } from 'node-cron';
+import { client } from './discord/discord';
+import { config, resolveConfig } from '../config/config';
 
 async function init() {
+    await resolveConfig();
+
     const app = express();
 
     client.login(config.discord.botToken);
