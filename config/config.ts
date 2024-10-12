@@ -27,6 +27,7 @@ export const resolveConfig = async () => {
         app: {
             port: Number(process.env.PORT || process.env.APP_PORT) || 3000,
             host: process.env.APP_HOST!,
+            userAgent: process.env.APP_USER_AGENT!,
         },
         discord: {
             botToken: process.env.DISCORD_BOT_TOKEN!,

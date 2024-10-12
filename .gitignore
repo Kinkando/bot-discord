@@ -7,3 +7,5 @@ build
 
 assets/*
 !assets/.gitkeep
+
+*.html

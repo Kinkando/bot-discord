@@ -63,7 +63,12 @@ export const playCommand = {
         const stream = ytdl(url, {
             filter: "audioonly",
             liveBuffer: 2000,
-            highWaterMark: 1 << 25
+            highWaterMark: 1 << 25,
+            requestOptions: {
+                headers: {
+                    'User-Agent': config.app.userAgent,
+                }
+            },
             // dlChunkSize: 0, //disabling chunking is recommended in discord bot
             // quality: "lowestaudio",
         });
