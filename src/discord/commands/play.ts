@@ -3,24 +3,29 @@ import { DiscordGatewayAdapterCreator, joinVoiceChannel } from "@discordjs/voice
 import ytdl from "@distube/ytdl-core";
 import yts from "yt-search";
 import { play } from "../audio";
+import { config } from "../../../config/config";
 
 export const playCommand = {
     input: new SlashCommandBuilder()
         .setName('play')
-        .setDescription('Plays audio from a youtube URL')
+        .setDescription('เล่นเพลงจาก YouTube')
         .addStringOption(option =>
             option.setName('url')
-                .setDescription('The URL of the audio to play')
+                .setDescription('ลิงก์เพลง')
                 .setRequired(false)
         )
         .addStringOption(option =>
             option.setName('search')
-                .setDescription('The name of audio to be play')
+                .setDescription('ชื่อเพลงที่ต้องการค้นหา')
                 .setRequired(false)
         )
         .toJSON(),
 
     command: async (interaction: ChatInputCommandInteraction<CacheType> | MessageContextMenuCommandInteraction<CacheType> | UserContextMenuCommandInteraction) => {
+        if (interaction.guildId !== config.discord.guildID) {
+            return;
+        }
+
         const options = interaction.options as Omit<CommandInteractionOptionResolver, 'getMessage' | 'getFocused'>;
         const member = interaction.member as GuildMember;
 
@@ -55,9 +60,13 @@ export const playCommand = {
             adapterCreator: interaction.guild!.voiceAdapterCreator as DiscordGatewayAdapterCreator,
         });
 
-        const stream = ytdl(url, { filter: 'audioonly' });
+        const stream = ytdl(url, {
+            filter: "audioonly",
+            liveBuffer: 2000,
+            highWaterMark: 1 << 25
+            // dlChunkSize: 0, //disabling chunking is recommended in discord bot
+            // quality: "lowestaudio",
+        });
         play({ resourceFile: stream, connection, left: 1 });
-
-        return await interaction.reply(`Playing youtube '${url}'`);
     },
 }
