@@ -1,5 +1,5 @@
 import axios from "axios";
-import { createWriteStream, existsSync } from "fs";
+import * as fs from 'fs';
 import { extname } from "path";
 import { v7 } from "uuid";
 import { DiscordRepository } from "../repository/discord";
@@ -53,11 +53,7 @@ export class DiscordService implements Service {
 
     async syncAudioToLocal(): Promise<void> {
         const audios = await this.discordRepository.getAllVoiceChannelAudios();
-        for (const userID of Object.keys(audios)) {
-            for (const audio of audios[userID]) {
-                await this.saveRemoteFile(audio.id, audio.url);
-            }
-        }
+        await Promise.all(Object.keys(audios).flatMap(userID => audios[userID].map(async (audio) => await this.saveRemoteFile(audio.id, audio.url))));
     }
 
     async getVoiceChannelAudioStatus(userID: string): Promise<Map<'ENABLED' | 'DISABLED'>> {
@@ -76,9 +72,9 @@ export class DiscordService implements Service {
 
     async saveRemoteFile(id: string, url: string): Promise<string> {
         const path = this.getLocalPath({ id, url })
-        if (!existsSync(path)) {
+        if (!fs.existsSync(path)) {
             const response = await axios.get(url, { responseType: 'stream' });
-            const writer = createWriteStream(path);
+            const writer = fs.createWriteStream(path);
             response.data.pipe(writer);
         }
         return path;
