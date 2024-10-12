@@ -5,6 +5,9 @@ import { DiscordService } from "../../service/discord";
 import { GetVoiceCommand } from "./get_voice";
 import { GetVoiceStatusCommand } from "./get_voice_status";
 import { config } from "../../../config/config";
+import { AddVoiceCommand } from "./add_voice";
+import { RemoveVoiceCommand } from "./remove_voice";
+import { ClearVoiceCommand } from "./clear_voice";
 
 export interface Command {
     command: (interaction: ChatInputCommandInteraction<CacheType> | MessageContextMenuCommandInteraction<CacheType> | UserContextMenuCommandInteraction) => Promise<void>;
@@ -19,19 +22,22 @@ export class CommandDependency {
     }
 }
 
-export function newDiscordCommands(disordService: DiscordService): Command[] {
-    const commandDependency = new CommandDependency(disordService);
+export function newDiscordCommands(discordService: DiscordService): Command[] {
+    const commandDependency = new CommandDependency(discordService);
     return [
         new PlayCommand(commandDependency),
         new JoinCommand(commandDependency),
         new GetVoiceCommand(commandDependency),
+        new AddVoiceCommand(commandDependency),
+        new RemoveVoiceCommand(commandDependency),
+        new ClearVoiceCommand(commandDependency),
         new GetVoiceStatusCommand(commandDependency),
     ]
 }
 
 export function interactionCreate(commands: Command[]) {
     return (async (interaction: ChatInputCommandInteraction<CacheType> | MessageContextMenuCommandInteraction<CacheType> | UserContextMenuCommandInteraction) => {
-        if (!interaction.isCommand() || interaction.guild?.id !== config.discord.guildID) return;
+        if (!interaction.isCommand() || interaction.guildId !== config.discord.guildID) return;
         try {
             const cmd = commands.find(cmd => cmd.input.name === interaction.commandName);
             if (cmd) {

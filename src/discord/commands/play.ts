@@ -25,10 +25,6 @@ export class PlayCommand implements Command {
         .toJSON();
 
     async command(interaction: ChatInputCommandInteraction<CacheType> | MessageContextMenuCommandInteraction<CacheType> | UserContextMenuCommandInteraction) {
-        if (interaction.guildId !== config.discord.guildID) {
-            return;
-        }
-
         const options = interaction.options as Omit<CommandInteractionOptionResolver, 'getMessage' | 'getFocused'>;
         const member = interaction.member as GuildMember;
 

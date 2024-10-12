@@ -1,7 +1,6 @@
 import { CacheType, ChatInputCommandInteraction, GuildMember, MessageContextMenuCommandInteraction, SlashCommandBuilder, UserContextMenuCommandInteraction } from "discord.js";
 import { DiscordGatewayAdapterCreator, joinVoiceChannel } from "@discordjs/voice";
 import { Command, CommandDependency } from ".";
-import { config } from "../../../config/config";
 
 export class JoinCommand implements Command {
     constructor(private readonly dependency: CommandDependency) {}
@@ -12,10 +11,6 @@ export class JoinCommand implements Command {
         .toJSON();
 
     async command(interaction: ChatInputCommandInteraction<CacheType> | MessageContextMenuCommandInteraction<CacheType> | UserContextMenuCommandInteraction) {
-        if (interaction.guildId !== config.discord.guildID) {
-            return;
-        }
-
         const member = interaction.member as GuildMember;
 
         if (!interaction.guild) {

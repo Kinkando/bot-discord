@@ -11,6 +11,8 @@ export interface Service {
     getVoiceChannelAudio(userID: string): Promise<VoiceChannelAudio | undefined>
     getVoiceChannelAudios(userID: string): Promise<VoiceChannelAudio[]>
     addVoiceChannelAudio(userID: string, url: string, repeatTime: number): Promise<void>
+    removeVoiceChannelAudio(userID: string, id: string): Promise<void>
+    clearVoiceChannelAudio(userID: string): Promise<void>
     syncAudioToLocal(): Promise<void>
     getLocalPath(voice: VoiceChannelAudio): string
 
@@ -47,8 +49,16 @@ export class DiscordService implements Service {
 
     async addVoiceChannelAudio(userID: string, url: string, repeatTime: number = 1): Promise<void> {
         const id = `${v7()}`.replace(/-/g, '');
-        await this.discordRepository.addVoiceChannelAudio(userID, { id, url, repeatTime });
         await this.saveRemoteFile(id, url);
+        await this.discordRepository.addVoiceChannelAudio(userID, { id, url, repeatTime });
+    }
+
+    async removeVoiceChannelAudio(userID: string, id: string): Promise<void> {
+        await this.discordRepository.removeVoiceChannelAudio(userID, id);
+    }
+
+    async clearVoiceChannelAudio(userID: string): Promise<void> {
+        await this.discordRepository.clearVoiceChannelAudio(userID);
     }
 
     async syncAudioToLocal(): Promise<void> {
