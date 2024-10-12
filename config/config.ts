@@ -23,8 +23,6 @@ export const resolveConfig = async () => {
         discordVoiceOption += opt.join(',') + '\n';
     }
 
-    console.log(process.env.DISCORD_VOICE_OPTIONS!)
-
     config = {
         app: {
             port: Number(process.env.PORT || process.env.APP_PORT) || 3000,

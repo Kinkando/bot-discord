@@ -22,7 +22,7 @@ export const voiceStateUpdate = async (oldState: VoiceState, newState: VoiceStat
 
         setTimeout(() => {
             loopPlay(voice.audio, connection, voice.repeatTime)
-        }, 1500);
+        }, 500);
 
         console.log(`${newState.member?.user.username} joined ${channel.name}`);
     }
