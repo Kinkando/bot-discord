@@ -33,11 +33,11 @@ export const playCommand = {
         const search = options.getString('search') ?? '';
 
         if (!url && !search) {
-            return await interaction.reply('Invalid argument, please try again!');
+            throw Error('Invalid argument, please try again!');
         }
 
         if (!interaction.guild) {
-            return await interaction.reply('You need to be in a voice channel to use this command!');
+            throw Error('You need to be in a voice channel to use this command!');
         }
 
         if (!url) {
@@ -49,7 +49,7 @@ export const playCommand = {
                 url = videos[0].url;
             } catch (error) {
                 console.log(error)
-                return await interaction.reply('Video not found, please try again!');
+                throw Error('Video not found, please try again!');
             }
         }
 

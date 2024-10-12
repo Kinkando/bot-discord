@@ -34,7 +34,7 @@ client.on('interactionCreate', async (interaction) => {
 
     } catch (error) {
         await interaction.deferReply({ ephemeral: true });
-        await interaction.followUp({ content: `Error: ${error}`, ephemeral: true });
+        await interaction.followUp({ content: `${error}`, ephemeral: true });
     }
 })
 
