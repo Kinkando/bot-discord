@@ -1,16 +1,21 @@
 import axios, { HttpStatusCode } from 'axios';
 import express, { Request, Response } from 'express';
 import { schedule } from 'node-cron';
-import { client, registerCommands } from './discord/discord';
+import { newDiscord } from './discord/discord';
+import { closeRedisConnection, newRedisConnection } from './database/redis';
+import { DiscordRepository } from './repository/discord';
 import { config, resolveConfig } from '../config/config';
 
 async function init() {
     await resolveConfig();
 
+    const redisClient = await newRedisConnection();
+
+    const discordRepository = new DiscordRepository(redisClient);
+
     const app = express();
 
-    client.login(config.discord.botToken);
-    await registerCommands();
+    await newDiscord(discordRepository);
 
     app.get('/health', (req: Request, res: Response) => {
             res.status(HttpStatusCode.Ok).json({ message: 'OK' });
@@ -31,6 +36,14 @@ async function init() {
     schedule('* * * * *', async () => {
             await axios.get(`${config.app.host}/health`)
     });
+
+    const gracefulShutdown = async (signal: string) => {
+        await closeRedisConnection(redisClient);
+        process.exit(0);
+    }
+
+    process.on('SIGINT', gracefulShutdown);
+    process.on('SIGTERM', gracefulShutdown);
 }
 
 init();

@@ -1,14 +1,17 @@
-import { CacheType, ChatInputCommandInteraction, CommandInteractionOptionResolver, GuildMember, MessageContextMenuCommandInteraction, SlashCommandBuilder, UserContextMenuCommandInteraction } from "discord.js";
+import { CacheType, ChatInputCommandInteraction, GuildMember, MessageContextMenuCommandInteraction, SlashCommandBuilder, UserContextMenuCommandInteraction } from "discord.js";
 import { DiscordGatewayAdapterCreator, joinVoiceChannel } from "@discordjs/voice";
+import { Command, CommandDependency } from ".";
 import { config } from "../../../config/config";
 
-export const joinCommand = {
-    input: new SlashCommandBuilder()
+export class JoinCommand implements Command {
+    constructor(private readonly dependency: CommandDependency) {}
+
+    public input = new SlashCommandBuilder()
         .setName('join')
         .setDescription('เรียกบอทเข้าสู่ช่องเสียง')
-        .toJSON(),
+        .toJSON();
 
-    command: async (interaction: ChatInputCommandInteraction<CacheType> | MessageContextMenuCommandInteraction<CacheType> | UserContextMenuCommandInteraction) => {
+    async command(interaction: ChatInputCommandInteraction<CacheType> | MessageContextMenuCommandInteraction<CacheType> | UserContextMenuCommandInteraction) {
         if (interaction.guildId !== config.discord.guildID) {
             return;
         }
@@ -25,5 +28,5 @@ export const joinCommand = {
             guildId: interaction.guild.id,
             adapterCreator: interaction.guild!.voiceAdapterCreator as DiscordGatewayAdapterCreator,
         });
-    },
+    }
 }

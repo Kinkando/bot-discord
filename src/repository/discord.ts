@@ -18,7 +18,7 @@ interface Repository {
     setVoiceChannelAudioStatus(userID: string, channelID: string, status: 'ENABLED' | 'DISABLED'): Promise<void>
 }
 
-export class CacheRepository implements Repository {
+export class DiscordRepository implements Repository {
     constructor(private db: RedisClientType<RedisDefaultModules>) {}
 
     async getAdminIDs(): Promise<string[]> {

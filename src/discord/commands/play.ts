@@ -4,9 +4,12 @@ import ytdl from "@distube/ytdl-core";
 import yts from "yt-search";
 import { play } from "../audio";
 import { config } from "../../../config/config";
+import { CommandDependency, Command } from ".";
 
-export const playCommand = {
-    input: new SlashCommandBuilder()
+export class PlayCommand implements Command {
+    constructor(private readonly dependency: CommandDependency) {}
+
+    public input = new SlashCommandBuilder()
         .setName('play')
         .setDescription('เล่นเพลงจาก YouTube')
         .addStringOption(option =>
@@ -19,9 +22,9 @@ export const playCommand = {
                 .setDescription('ชื่อเพลงที่ต้องการค้นหา')
                 .setRequired(false)
         )
-        .toJSON(),
+        .toJSON();
 
-    command: async (interaction: ChatInputCommandInteraction<CacheType> | MessageContextMenuCommandInteraction<CacheType> | UserContextMenuCommandInteraction) => {
+    async command(interaction: ChatInputCommandInteraction<CacheType> | MessageContextMenuCommandInteraction<CacheType> | UserContextMenuCommandInteraction) {
         if (interaction.guildId !== config.discord.guildID) {
             return;
         }
@@ -73,5 +76,5 @@ export const playCommand = {
             // quality: "lowestaudio",
         });
         play({ resourceFile: stream, connection, left: 1 });
-    },
+    }
 }
