@@ -29,14 +29,12 @@ client.on('interactionCreate', async (interaction) => {
         if (cmd) {
             await cmd.command(interaction);
         }
-        await interaction.reply({ content: 'Done!' });
-        // await interaction.deferReply({ ephemeral: true });
-        // await interaction.followUp({ content: 'Done!', ephemeral: true });
+        await interaction.deferReply({ ephemeral: true });
+        await interaction.followUp({ content: 'Done!', ephemeral: true });
 
     } catch (error) {
-        await interaction.reply({ content: `${error}` });
-        // await interaction.deferReply({ ephemeral: true });
-        // await interaction.followUp({ content: `${error}`, ephemeral: true });
+        await interaction.deferReply({ ephemeral: true });
+        await interaction.followUp({ content: `${error}`, ephemeral: true });
     }
 })
 
