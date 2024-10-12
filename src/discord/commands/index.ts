@@ -8,6 +8,7 @@ import { config } from "../../../config/config";
 import { AddVoiceCommand } from "./add_voice";
 import { RemoveVoiceCommand } from "./remove_voice";
 import { ClearVoiceCommand } from "./clear_voice";
+import { UpdateVoiceStatusCommand } from "./update_voice_status";
 
 export interface Command {
     command: (interaction: ChatInputCommandInteraction<CacheType> | MessageContextMenuCommandInteraction<CacheType> | UserContextMenuCommandInteraction) => Promise<void>;
@@ -32,6 +33,7 @@ export function newDiscordCommands(discordService: DiscordService): Command[] {
         new RemoveVoiceCommand(commandDependency),
         new ClearVoiceCommand(commandDependency),
         new GetVoiceStatusCommand(commandDependency),
+        new UpdateVoiceStatusCommand(commandDependency),
     ]
 }
 
