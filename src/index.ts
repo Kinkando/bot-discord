@@ -1,7 +1,7 @@
 import axios, { HttpStatusCode } from 'axios';
 import express, { Request, Response } from 'express';
 import { schedule } from 'node-cron';
-import { client } from './discord/discord';
+import { client, registerCommands } from './discord/discord';
 import { config, resolveConfig } from '../config/config';
 
 async function init() {
@@ -10,6 +10,7 @@ async function init() {
     const app = express();
 
     client.login(config.discord.botToken);
+    await registerCommands();
 
     app.get('/health', (req: Request, res: Response) => {
             res.status(HttpStatusCode.Ok).json({ message: 'OK' });
