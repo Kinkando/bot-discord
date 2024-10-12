@@ -9,6 +9,7 @@ interface Repository {
     getAdminIDs(): Promise<string[]>
     setAdminIDs(adminIDs: string[]): Promise<void>
 
+    getAllVoiceChannelAudios(): Promise<Map<VoiceChannelAudio[]>>
     getVoiceChannelAudios(userID: string): Promise<VoiceChannelAudio[]>
     addVoiceChannelAudio(userID: string, req: VoiceChannelAudio): Promise<void>
     removeVoiceChannelAudio(userID: string, id: string): Promise<void>
@@ -35,6 +36,17 @@ export class DiscordRepository implements Repository {
         await this.db.SET(key, JSON.stringify(adminIDs));
     }
 
+    async getAllVoiceChannelAudios(): Promise<Map<VoiceChannelAudio[]>> {
+        const key = `${prefixKey}:VOICE_CHANNEL_AUDIO:DETAIL:*:${config.discord.applicationID}:${config.discord.guildID}`;
+        const keys = await this.db.KEYS(key);
+        const result: Map<VoiceChannelAudio[]> = {};
+        for (const k of keys) {
+            const userID = k.split(':')[3];
+            result[userID] = await this.getVoiceChannelAudios(userID);
+        }
+        return result;
+    }
+
     async getVoiceChannelAudios(userID: string): Promise<VoiceChannelAudio[]> {
         const key = `${prefixKey}:VOICE_CHANNEL_AUDIO:DETAIL:${userID}:${config.discord.applicationID}:${config.discord.guildID}`;
         const result = await this.db.HGETALL(key);
@@ -45,8 +57,8 @@ export class DiscordRepository implements Repository {
         for (const id of Object.keys(result)) {
             audios.push({
                 id,
-                repeatTime: Number(result[id].substring(0, result[id].indexOf('*'))),
-                url: result[id].substring(result[id].indexOf('*')+1),
+                repeatTime: Number(result[id].substring(0, result[id].indexOf('|'))),
+                url: result[id].substring(result[id].indexOf('|')+1),
             })
         }
         return audios;

@@ -1,7 +1,8 @@
 import { CacheType, ChatInputCommandInteraction, Interaction, MessageContextMenuCommandInteraction, RESTPostAPIChatInputApplicationCommandsJSONBody, UserContextMenuCommandInteraction } from "discord.js";
 import { PlayCommand } from "./play";
-import { DiscordRepository } from "../../repository/discord";
 import { JoinCommand } from "./join";
+import { DiscordService } from "../../service/discord";
+import { GetVoiceCommand } from "./get_voice";
 
 export interface Command {
     command: (interaction: ChatInputCommandInteraction<CacheType> | MessageContextMenuCommandInteraction<CacheType> | UserContextMenuCommandInteraction) => Promise<void>;
@@ -9,18 +10,19 @@ export interface Command {
 }
 
 export class CommandDependency {
-    constructor(private readonly _discordRepository: DiscordRepository) {}
+    constructor(private readonly _discordService: DiscordService) {}
 
-    public disordRepository(): DiscordRepository {
-        return this._discordRepository;
+    public get discordService(): DiscordService {
+        return this._discordService;
     }
 }
 
-export function newDiscordCommands(discordRepository: DiscordRepository): Command[] {
-    const commandDependency = new CommandDependency(discordRepository);
+export function newDiscordCommands(disordService: DiscordService): Command[] {
+    const commandDependency = new CommandDependency(disordService);
     return [
         new PlayCommand(commandDependency),
         new JoinCommand(commandDependency),
+        new GetVoiceCommand(commandDependency),
     ]
 }
 
@@ -32,10 +34,9 @@ export function interactionCreate(commands: Command[]) {
             if (cmd) {
                 await cmd.command(interaction);
             }
-            await interaction.deferReply({ ephemeral: true });
-            await interaction.followUp({ content: 'Done!', ephemeral: true });
 
         } catch (error) {
+            console.error(error);
             await interaction.deferReply({ ephemeral: true });
             await interaction.followUp({ content: `${error}`, ephemeral: true });
         }

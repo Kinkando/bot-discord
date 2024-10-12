@@ -2,9 +2,9 @@ import { Client, GatewayIntentBits, REST, Routes } from 'discord.js';
 import { interactionCreate, newDiscordCommands } from './commands';
 import { voiceStateUpdate } from './voice';
 import { config } from '../config/config';
-import { DiscordRepository } from '../repository/discord';
+import { DiscordService } from '../service/discord';
 
-async function newDiscord(discordRepository: DiscordRepository) {
+export async function newDiscord(discordService: DiscordService) {
     const client = new Client({
         intents: [
             GatewayIntentBits.Guilds,
@@ -13,11 +13,11 @@ async function newDiscord(discordRepository: DiscordRepository) {
         ],
     });
 
-    const commands = newDiscordCommands(discordRepository);
+    const commands = newDiscordCommands(discordService);
 
     client.once('ready', () => console.log(`Logged in as ${client.user?.tag}`));
 
-    client.on('voiceStateUpdate', voiceStateUpdate(discordRepository));
+    client.on('voiceStateUpdate', voiceStateUpdate(discordService));
 
     client.on('interactionCreate', interactionCreate(commands));
 
@@ -25,8 +25,4 @@ async function newDiscord(discordRepository: DiscordRepository) {
     await rest.put(Routes.applicationGuildCommands(config.discord.applicationID, config.discord.guildID), { body: commands.map(cmd => cmd.input) });
 
     client.login(config.discord.botToken);
-}
-
-export {
-    newDiscord,
 }

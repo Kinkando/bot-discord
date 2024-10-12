@@ -1,21 +1,24 @@
 import axios, { HttpStatusCode } from 'axios';
 import express, { Request, Response } from 'express';
 import { schedule } from 'node-cron';
-import { newDiscord } from './discord/discord';
+import { config } from './config/config';
 import { closeRedisConnection, newRedisConnection } from './database/redis';
+import { newDiscord } from './discord/discord';
+import { DiscordService } from './service/discord';
 import { DiscordRepository } from './repository/discord';
-import { config, resolveConfig } from './config/config';
 
 async function init() {
-    await resolveConfig();
-
     const redisClient = await newRedisConnection();
 
     const discordRepository = new DiscordRepository(redisClient);
 
+    const discordService = new DiscordService(discordRepository);
+
+    await discordService.syncAudioToLocal();
+
     const app = express();
 
-    await newDiscord(discordRepository);
+    await newDiscord(discordService);
 
     app.get('/health', (req: Request, res: Response) => {
             res.status(HttpStatusCode.Ok).json({ message: 'OK' });

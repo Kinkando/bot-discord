@@ -76,5 +76,8 @@ export class PlayCommand implements Command {
             // quality: "lowestaudio",
         });
         play({ resourceFile: stream, connection, left: 1 });
+
+        await interaction.deferReply({ ephemeral: true });
+        await interaction.followUp({ content: `Playing YouTube ${url}`, ephemeral: true });
     }
 }

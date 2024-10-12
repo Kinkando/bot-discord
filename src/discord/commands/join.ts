@@ -28,5 +28,8 @@ export class JoinCommand implements Command {
             guildId: interaction.guild.id,
             adapterCreator: interaction.guild!.voiceAdapterCreator as DiscordGatewayAdapterCreator,
         });
+
+        await interaction.deferReply({ ephemeral: true });
+        await interaction.followUp({ content: `${member.displayName} invited`, ephemeral: true });
     }
 }
