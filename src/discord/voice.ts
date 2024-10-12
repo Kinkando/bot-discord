@@ -27,7 +27,7 @@ export const voiceStateUpdate = (disordService: DiscordService) => {
             });
 
             setTimeout(() => {
-                audioQueue.push({ resourceFile: voice.url, connection, left: voice.repeatTime ?? 1 });
+                audioQueue.push({ resourceFile: disordService.getLocalPath(voice), connection, left: voice.repeatTime ?? 1 });
             }, 500);
 
             console.log(`${newState.member?.user.username} joined ${channel.name}`);

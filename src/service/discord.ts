@@ -5,12 +5,17 @@ import { v7 } from "uuid";
 import { DiscordRepository } from "../repository/discord";
 import { VoiceChannelAudio } from "../types/discord";
 import { random } from "../util/random";
+import { Map } from "../types/map";
 
 export interface Service {
     getVoiceChannelAudio(userID: string): Promise<VoiceChannelAudio | undefined>
+    getVoiceChannelAudios(userID: string): Promise<VoiceChannelAudio[]>
     addVoiceChannelAudio(userID: string, url: string, repeatTime: number): Promise<void>
     syncAudioToLocal(): Promise<void>
     getLocalPath(voice: VoiceChannelAudio): string
+
+    getVoiceChannelAudioStatus(userID: string): Promise<Map<'ENABLED' | 'DISABLED'>>
+    setVoiceChannelAudioStatus(userID: string, channelID: string, status: 'ENABLED' | 'DISABLED'): Promise<void>
 }
 
 export class DiscordService implements Service {
@@ -30,6 +35,16 @@ export class DiscordService implements Service {
         }
     }
 
+    async getVoiceChannelAudios(userID: string): Promise<VoiceChannelAudio[]> {
+        try {
+            return await this.discordRepository.getVoiceChannelAudios(userID);
+
+        } catch (error) {
+            console.error(error);
+            return [];
+        }
+    }
+
     async addVoiceChannelAudio(userID: string, url: string, repeatTime: number = 1): Promise<void> {
         const id = `${v7()}`.replace(/-/g, '');
         await this.discordRepository.addVoiceChannelAudio(userID, { id, url, repeatTime });
@@ -43,6 +58,14 @@ export class DiscordService implements Service {
                 await this.saveRemoteFile(audio.id, audio.url);
             }
         }
+    }
+
+    async getVoiceChannelAudioStatus(userID: string): Promise<Map<'ENABLED' | 'DISABLED'>> {
+        return this.discordRepository.getVoiceChannelAudioStatus(userID);
+    }
+
+    async setVoiceChannelAudioStatus(userID: string, channelID: string, status: 'ENABLED' | 'DISABLED'): Promise<void> {
+        return this.discordRepository.setVoiceChannelAudioStatus(userID, channelID, status);
     }
 
     getLocalPath(voice: VoiceChannelAudio): string {
