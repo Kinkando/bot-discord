@@ -1,7 +1,7 @@
 import { Client, GatewayIntentBits, REST, Routes } from 'discord.js';
 import { interactionCreate, newDiscordCommands } from './commands';
 import { voiceStateUpdate } from './voice';
-import { config } from '../config/config';
+import { config } from '../../config/config';
 import { DiscordService } from '../service/discord';
 
 export async function newDiscord(discordService: DiscordService) {

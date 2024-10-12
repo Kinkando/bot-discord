@@ -4,7 +4,7 @@ import { JoinCommand } from "./join";
 import { DiscordService } from "../../service/discord";
 import { GetVoiceCommand } from "./get_voice";
 import { GetVoiceStatusCommand } from "./get_voice_status";
-import { config } from "../../config/config";
+import { config } from "../../../config/config";
 
 export interface Command {
     command: (interaction: ChatInputCommandInteraction<CacheType> | MessageContextMenuCommandInteraction<CacheType> | UserContextMenuCommandInteraction) => Promise<void>;

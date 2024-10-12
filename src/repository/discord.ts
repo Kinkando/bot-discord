@@ -1,5 +1,5 @@
 import { RedisClientType, RedisDefaultModules } from "redis";
-import { config } from "../config/config";
+import { config } from "../../config/config";
 import { VoiceChannelAudio } from "../types/discord";
 import { Map } from "../types/map";
 

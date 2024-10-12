@@ -1,6 +1,6 @@
 import { CacheType, ChatInputCommandInteraction, MessageContextMenuCommandInteraction, SlashCommandBuilder, UserContextMenuCommandInteraction, VoiceBasedChannel } from "discord.js";
 import { Command, CommandDependency } from ".";
-import { config } from "../../config/config";
+import { config } from "../../../config/config";
 
 export class GetVoiceStatusCommand implements Command {
     constructor(private readonly dependency: CommandDependency) {}

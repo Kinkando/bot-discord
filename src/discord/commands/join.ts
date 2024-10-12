@@ -1,7 +1,7 @@
 import { CacheType, ChatInputCommandInteraction, GuildMember, MessageContextMenuCommandInteraction, SlashCommandBuilder, UserContextMenuCommandInteraction } from "discord.js";
 import { DiscordGatewayAdapterCreator, joinVoiceChannel } from "@discordjs/voice";
 import { Command, CommandDependency } from ".";
-import { config } from "../../config/config";
+import { config } from "../../../config/config";
 
 export class JoinCommand implements Command {
     constructor(private readonly dependency: CommandDependency) {}

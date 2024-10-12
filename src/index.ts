@@ -1,11 +1,11 @@
 import axios, { HttpStatusCode } from 'axios';
 import express, { Request, Response } from 'express';
 import { schedule } from 'node-cron';
-import { config } from './config/config';
 import { closeRedisConnection, newRedisConnection } from './database/redis';
 import { newDiscord } from './discord/discord';
 import { DiscordService } from './service/discord';
 import { DiscordRepository } from './repository/discord';
+import { config } from '../config/config';
 
 async function init() {
     const redisClient = await newRedisConnection();

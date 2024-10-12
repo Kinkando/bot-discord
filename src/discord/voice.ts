@@ -1,7 +1,7 @@
 import { VoiceState } from 'discord.js';
 import { joinVoiceChannel, DiscordGatewayAdapterCreator } from '@discordjs/voice';
 import { audioQueue } from './audio';
-import { config } from "../config/config";
+import { config } from "../../config/config";
 import { DiscordService } from '../service/discord';
 
 export const voiceStateUpdate = (disordService: DiscordService) => {

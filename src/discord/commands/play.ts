@@ -4,7 +4,7 @@ import ytdl from "@distube/ytdl-core";
 import yts from "yt-search";
 import { CommandDependency, Command } from ".";
 import { play } from "../audio";
-import { config } from "../../config/config";
+import { config } from "../../../config/config";
 
 export class PlayCommand implements Command {
     constructor(private readonly dependency: CommandDependency) {}
