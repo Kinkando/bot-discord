@@ -11,7 +11,7 @@ export class GetVoiceStatusCommand implements Command {
         .toJSON();
 
     async command(interaction: ChatInputCommandInteraction<CacheType> | MessageContextMenuCommandInteraction<CacheType> | UserContextMenuCommandInteraction) {
-        if (interaction.guildId !== config.discord.guildID || !interaction.member) {
+        if (!interaction.member) {
             return;
         }
 
