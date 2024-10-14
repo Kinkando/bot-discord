@@ -54,6 +54,8 @@ export class PlayCommand implements Command {
 
         // Join the voice channel
         const connection = joinVoiceChannel({
+            selfMute: false,
+            selfDeaf: false,
             channelId: member.voice.channelId!,
             guildId: interaction.guild.id,
             adapterCreator: interaction.guild!.voiceAdapterCreator as DiscordGatewayAdapterCreator,

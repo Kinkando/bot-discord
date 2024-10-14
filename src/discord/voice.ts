@@ -8,7 +8,7 @@ export const voiceStateUpdate = (discordService: DiscordService) => {
     return async (oldState: VoiceState, newState: VoiceState) => {
         // Check if a user has joined a voice channel
         if (!oldState.channelId && newState.channelId && newState.guild.id === config.discord.guildID) {
-            if (!newState.member || newState.member?.user.id === config.discord.botID) {
+            if (!newState.member || newState.member?.user.id === config.discord.botID || newState.member?.user.bot) {
                 return;
             }
 
@@ -27,6 +27,8 @@ export const voiceStateUpdate = (discordService: DiscordService) => {
 
                 // Join the voice channel
                 const connection = joinVoiceChannel({
+                    selfMute: false,
+                    selfDeaf: false,
                     channelId: channel.id,
                     guildId: newState.guild.id,
                     adapterCreator: newState.guild.voiceAdapterCreator as DiscordGatewayAdapterCreator,
