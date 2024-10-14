@@ -26,7 +26,7 @@ export class CommandDependency {
 export function newDiscordCommands(discordService: DiscordService): Command[] {
     const commandDependency = new CommandDependency(discordService);
     return [
-        new PlayCommand(commandDependency),
+        // new PlayCommand(commandDependency),
         new JoinCommand(commandDependency),
         new GetVoiceCommand(commandDependency),
         new AddVoiceCommand(commandDependency),
