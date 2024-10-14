@@ -20,6 +20,7 @@ export class JoinCommand implements Command {
         // Join the voice channel
         joinVoiceChannel({
             selfMute: false,
+            selfDeaf: false,
             channelId: member.voice.channelId!,
             guildId: interaction.guild.id,
             adapterCreator: interaction.guild!.voiceAdapterCreator as DiscordGatewayAdapterCreator,
