@@ -22,7 +22,7 @@ export class AddVoiceCommand implements Command {
     async command(interaction: ChatInputCommandInteraction<CacheType> | MessageContextMenuCommandInteraction<CacheType> | UserContextMenuCommandInteraction) {
         const options = interaction.options as Omit<CommandInteractionOptionResolver, 'getMessage' | 'getFocused'>;
         const url = options.getString("url") ?? '';
-        const repeatTime = Math.floor(options.getNumber("repeatTime") || 1);
+        const repeatTime = Math.floor(options.getNumber("repeat-time") || 1);
 
         try {
             if (repeatTime < 1) {
