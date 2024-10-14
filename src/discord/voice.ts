@@ -42,6 +42,11 @@ export const voiceStateUpdate = (discordService: DiscordService) => {
                     console.log(`${newState.member?.user.username} joined ${channel.name}`);
                 });
 
+                connection.on(VoiceConnectionStatus.Disconnected, () => {
+                    connection.disconnect();
+                    connection.destroy();
+                });
+
             } catch (error) {
                 console.error(error);
             }
