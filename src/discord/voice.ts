@@ -34,18 +34,11 @@ export const voiceStateUpdate = (discordService: DiscordService) => {
                     adapterCreator: newState.guild.voiceAdapterCreator as DiscordGatewayAdapterCreator,
                 });
 
-                connection.on(VoiceConnectionStatus.Ready, () => {
-                    setTimeout(() => {
-                        audioQueue.push({ resourceFile: discordService.getLocalPath(voice), connection, left: voice.repeatTime ?? 1 });
-                    }, 500);
+                setTimeout(() => {
+                    audioQueue.push({ resourceFile: discordService.getLocalPath(voice), connection, left: voice.repeatTime ?? 1 });
+                }, 500);
 
-                    console.log(`${newState.member?.user.username} joined ${channel.name}`);
-                });
-
-                connection.on(VoiceConnectionStatus.Disconnected, () => {
-                    connection.disconnect();
-                    connection.destroy();
-                });
+                console.log(`${newState.member?.user.username} joined ${channel.name}`);
 
             } catch (error) {
                 console.error(error);
