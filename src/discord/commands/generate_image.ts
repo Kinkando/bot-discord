@@ -1,5 +1,6 @@
-import { ActionRowBuilder, CacheType, ChatInputCommandInteraction, MessageContextMenuCommandInteraction, MessageFlags, ModalBuilder, ModalSubmitInteraction, SlashCommandBuilder, TextInputBuilder, TextInputStyle, UserContextMenuCommandInteraction } from "discord.js";
+import { ActionRowBuilder, CacheType, ChatInputCommandInteraction, CommandInteractionOptionResolver, MessageContextMenuCommandInteraction, MessageFlags, ModalBuilder, ModalSubmitInteraction, SlashCommandBuilder, TextInputBuilder, TextInputStyle, UserContextMenuCommandInteraction } from "discord.js";
 import { Command, CommandDependency } from ".";
+import { BatchProgressStatus } from "../../types/image_generation_ai";
 
 const customID = {
     preset: 'preset',
@@ -47,9 +48,18 @@ export class GenerateImageCommand implements Command {
 
                 const prompt = interaction.fields.getTextInputValue(customID.prompt);
 
-                const imageURLs = await this.dependency.imageGenerationAIService.generateImage(prompt, preset)
+                const imageURLs = await this.dependency.imageGenerationAIService.generateImage(prompt, preset, async (status, process) => {
+                    switch (status) {
+                        case BatchProgressStatus.Waiting:
+                            await interaction.editReply({ content: `Waiting...` });
+                            break;
+                        case BatchProgressStatus.Processing:
+                            await interaction.editReply({ content: `Completed ${process}%` });
+                            break;
+                    }
+                })
 
-                await interaction.followUp({ content: `**prompt**: ${prompt}\n${imageURLs.join('\n')}` });
+                await interaction.editReply({ content: `**prompt**: ${prompt}\n${imageURLs.join('\n')}` });
             }
 
         } catch (error) {

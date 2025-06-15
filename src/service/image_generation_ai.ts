@@ -5,7 +5,7 @@ import { config } from "../../config/config";
 
 export interface Service {
     getPresets(): Promise<ImageGenerationPreset[]>;
-    generateImage(prompt: string, req: TextToImageRequest): Promise<string[]>;
+    generateImage(prompt: string, req: TextToImageRequest, callback: (status: BatchProgressStatus, process: number) => void): Promise<string[]>;
 }
 
 export class ImageGenerationAIService implements Service {
@@ -15,7 +15,7 @@ export class ImageGenerationAIService implements Service {
         return await this.repository.getPresets();
     }
 
-    async generateImage(prompt: string, req: TextToImageRequest): Promise<string[]> {
+    async generateImage(prompt: string, req: TextToImageRequest, callback: (status: BatchProgressStatus, process: number) => void): Promise<string[]> {
         const { headers } = await this.repository.getConfig();
 
         req.meta.prompt = prompt;
@@ -55,6 +55,7 @@ export class ImageGenerationAIService implements Service {
                             isFinished = true;
                             continue
                         }
+                        callback(item.status, item.process);
                         isFinished = false;
                         break;
                     }
