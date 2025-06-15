@@ -40,6 +40,9 @@ const config: Config = {
         applicationID: process.env.DISCORD_APPLICATION_ID!,
         guildID: process.env.DISCORD_GUILD_ID!,
         botID: process.env.DISCORD_BOT_ID!,
+        allowedUserIDs: process.env.DISCORD_ALLOWED_USER_IDS ? process.env.DISCORD_ALLOWED_USER_IDS.split(',') : [],
+        allowedRoleIDs: process.env.DISCORD_ALLOWED_ROLE_IDS ? process.env.DISCORD_ALLOWED_ROLE_IDS.split(',') : [],
+        allowedChannelIDs: process.env.DISCORD_ALLOWED_CHANNEL_IDS ? process.env.DISCORD_ALLOWED_CHANNEL_IDS.split(',') : [],
     },
     imageGenerationAI: {
         baseURL: process.env.IMAGE_GENERATION_AI_BASE_URL!,

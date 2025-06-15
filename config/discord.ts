@@ -3,4 +3,7 @@ export type DiscordConfig = {
     readonly applicationID: string;
     readonly guildID: string;
     readonly botID: string;
+    readonly allowedUserIDs?: string[];
+    readonly allowedRoleIDs?: string[];
+    readonly allowedChannelIDs?: string[];
 }
