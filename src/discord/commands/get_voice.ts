@@ -1,4 +1,4 @@
-import { CacheType, ChatInputCommandInteraction, MessageContextMenuCommandInteraction, SlashCommandBuilder, UserContextMenuCommandInteraction } from "discord.js";
+import { CacheType, ChatInputCommandInteraction, MessageContextMenuCommandInteraction, ModalSubmitInteraction, SlashCommandBuilder, UserContextMenuCommandInteraction } from "discord.js";
 import { Command, CommandDependency } from ".";
 
 export class GetVoiceCommand implements Command {
@@ -9,7 +9,7 @@ export class GetVoiceCommand implements Command {
         .setDescription('แสดง sound board ทั้งหมดของผู้ใช้')
         .toJSON();
 
-    async command(interaction: ChatInputCommandInteraction<CacheType> | MessageContextMenuCommandInteraction<CacheType> | UserContextMenuCommandInteraction) {
+    async command(interaction: ChatInputCommandInteraction<CacheType> | MessageContextMenuCommandInteraction<CacheType> | UserContextMenuCommandInteraction | ModalSubmitInteraction) {
         if (!interaction.member) {
             return;
         }

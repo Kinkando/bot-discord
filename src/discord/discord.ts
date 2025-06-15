@@ -3,8 +3,9 @@ import { interactionCreate, newDiscordCommands } from './commands';
 import { voiceStateUpdate } from './voice';
 import { config } from '../../config/config';
 import { DiscordService } from '../service/discord';
+import { ImageGenerationAIService } from '../service/image_generation_ai';
 
-export async function newDiscord(discordService: DiscordService) {
+export async function newDiscord(discordService: DiscordService, imageGenerationAIRepository: ImageGenerationAIService) {
     const client = new Client({
         intents: [
             GatewayIntentBits.Guilds,
@@ -13,7 +14,7 @@ export async function newDiscord(discordService: DiscordService) {
         ],
     });
 
-    const commands = newDiscordCommands(discordService);
+    const commands = newDiscordCommands(discordService, imageGenerationAIRepository);
 
     client.once('ready', () => console.log(`Logged in as ${client.user?.tag}`));
 

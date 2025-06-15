@@ -1,4 +1,4 @@
-import { CacheType, ChatInputCommandInteraction, MessageContextMenuCommandInteraction, SlashCommandBuilder, UserContextMenuCommandInteraction, VoiceBasedChannel } from "discord.js";
+import { CacheType, ChatInputCommandInteraction, MessageContextMenuCommandInteraction, ModalSubmitInteraction, SlashCommandBuilder, UserContextMenuCommandInteraction, VoiceBasedChannel } from "discord.js";
 import { Command, CommandDependency } from ".";
 import { config } from "../../../config/config";
 
@@ -10,7 +10,7 @@ export class GetVoiceStatusCommand implements Command {
         .setDescription('แสดงห้องที่ผู้ใช้สามารถใช้งาน sound board ได้')
         .toJSON();
 
-    async command(interaction: ChatInputCommandInteraction<CacheType> | MessageContextMenuCommandInteraction<CacheType> | UserContextMenuCommandInteraction) {
+    async command(interaction: ChatInputCommandInteraction<CacheType> | MessageContextMenuCommandInteraction<CacheType> | UserContextMenuCommandInteraction | ModalSubmitInteraction) {
         if (!interaction.member) {
             return;
         }

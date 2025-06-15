@@ -1,4 +1,4 @@
-import { CacheType, ChatInputCommandInteraction, CommandInteractionOptionResolver, MessageContextMenuCommandInteraction, SlashCommandBuilder, UserContextMenuCommandInteraction } from "discord.js";
+import { CacheType, ChatInputCommandInteraction, CommandInteractionOptionResolver, MessageContextMenuCommandInteraction, ModalSubmitInteraction, SlashCommandBuilder, UserContextMenuCommandInteraction } from "discord.js";
 import { Command, CommandDependency } from ".";
 
 export class ClearVoiceCommand implements Command {
@@ -9,7 +9,7 @@ export class ClearVoiceCommand implements Command {
         .setDescription('ล้าง sound board ทั้งหมดของผู้ใช้')
         .toJSON();
 
-    async command(interaction: ChatInputCommandInteraction<CacheType> | MessageContextMenuCommandInteraction<CacheType> | UserContextMenuCommandInteraction) {
+    async command(interaction: ChatInputCommandInteraction<CacheType> | MessageContextMenuCommandInteraction<CacheType> | UserContextMenuCommandInteraction | ModalSubmitInteraction) {
         try {
             await this.dependency.discordService.clearVoiceChannelAudio(interaction.member!.user.id);
 

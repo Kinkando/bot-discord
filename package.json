@@ -29,6 +29,7 @@
     "express": "^4.21.1",
     "install": "^0.13.0",
     "libsodium-wrappers": "^0.7.15",
+    "mongodb": "^6.17.0",
     "node-cron": "^3.0.3",
     "nodemon": "^3.1.7",
     "redis": "^4.7.0",

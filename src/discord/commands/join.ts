@@ -1,4 +1,4 @@
-import { CacheType, ChannelType, ChatInputCommandInteraction, CommandInteractionOptionResolver, GuildMember, MessageContextMenuCommandInteraction, SlashCommandBuilder, UserContextMenuCommandInteraction } from "discord.js";
+import { CacheType, ChannelType, ChatInputCommandInteraction, CommandInteractionOptionResolver, GuildMember, MessageContextMenuCommandInteraction, ModalSubmitInteraction, SlashCommandBuilder, UserContextMenuCommandInteraction } from "discord.js";
 import { DiscordGatewayAdapterCreator, joinVoiceChannel } from "@discordjs/voice";
 import { Command, CommandDependency } from ".";
 
@@ -16,8 +16,8 @@ export class JoinCommand implements Command {
         )
         .toJSON();
 
-    async command(interaction: ChatInputCommandInteraction<CacheType> | MessageContextMenuCommandInteraction<CacheType> | UserContextMenuCommandInteraction) {
-        const options = interaction.options as Omit<CommandInteractionOptionResolver, 'getMessage' | 'getFocused'>;
+    async command(interaction: ChatInputCommandInteraction<CacheType> | MessageContextMenuCommandInteraction<CacheType> | UserContextMenuCommandInteraction | ModalSubmitInteraction) {
+        const options = (interaction as ChatInputCommandInteraction).options as Omit<CommandInteractionOptionResolver, 'getMessage' | 'getFocused'>;
         const member = interaction.member as GuildMember;
         const channelId = options.getChannel('channel')?.id ?? member.voice.channelId!;
 

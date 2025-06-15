@@ -1,4 +1,4 @@
-import { CacheType, ChatInputCommandInteraction, CommandInteractionOptionResolver, MessageContextMenuCommandInteraction, SlashCommandBuilder, UserContextMenuCommandInteraction } from "discord.js";
+import { CacheType, ChatInputCommandInteraction, CommandInteractionOptionResolver, MessageContextMenuCommandInteraction, ModalSubmitInteraction, SlashCommandBuilder, UserContextMenuCommandInteraction } from "discord.js";
 import { Command, CommandDependency } from ".";
 
 export class AddVoiceCommand implements Command {
@@ -19,8 +19,8 @@ export class AddVoiceCommand implements Command {
         )
         .toJSON();
 
-    async command(interaction: ChatInputCommandInteraction<CacheType> | MessageContextMenuCommandInteraction<CacheType> | UserContextMenuCommandInteraction) {
-        const options = interaction.options as Omit<CommandInteractionOptionResolver, 'getMessage' | 'getFocused'>;
+    async command(interaction: ChatInputCommandInteraction<CacheType> | MessageContextMenuCommandInteraction<CacheType> | UserContextMenuCommandInteraction | ModalSubmitInteraction) {
+        const options = (interaction as ChatInputCommandInteraction).options as Omit<CommandInteractionOptionResolver, 'getMessage' | 'getFocused'>;
         const url = options.getString("url") ?? '';
         const repeatTime = Math.floor(options.getNumber("repeat-time") || 1);
 

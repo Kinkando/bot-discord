@@ -1,4 +1,4 @@
-import { CacheType, ChatInputCommandInteraction, CommandInteractionOptionResolver, GuildMember, MessageContextMenuCommandInteraction, SlashCommandBuilder, UserContextMenuCommandInteraction } from "discord.js";
+import { CacheType, ChatInputCommandInteraction, CommandInteractionOptionResolver, GuildMember, MessageContextMenuCommandInteraction, ModalSubmitInteraction, SlashCommandBuilder, UserContextMenuCommandInteraction } from "discord.js";
 import { DiscordGatewayAdapterCreator, joinVoiceChannel } from "@discordjs/voice";
 import ytdl from "@distube/ytdl-core";
 import yts from "yt-search";
@@ -24,8 +24,8 @@ export class PlayCommand implements Command {
         )
         .toJSON();
 
-    async command(interaction: ChatInputCommandInteraction<CacheType> | MessageContextMenuCommandInteraction<CacheType> | UserContextMenuCommandInteraction) {
-        const options = interaction.options as Omit<CommandInteractionOptionResolver, 'getMessage' | 'getFocused'>;
+    async command(interaction: ChatInputCommandInteraction<CacheType> | MessageContextMenuCommandInteraction<CacheType> | UserContextMenuCommandInteraction | ModalSubmitInteraction) {
+        const options = (interaction as ChatInputCommandInteraction).options as Omit<CommandInteractionOptionResolver, 'getMessage' | 'getFocused'>;
         const member = interaction.member as GuildMember;
 
         let url = options.getString('url') ?? '';
