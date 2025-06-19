@@ -56,6 +56,8 @@ export class GenerateImageCommand implements Command {
                         case BatchProgressStatus.Processing:
                             await interaction.editReply({ content: `Completed ${process}%` });
                             break;
+                        case BatchProgressStatus.Canceled:
+                            throw new Error('Image generation was canceled');
                     }
                 })
 

@@ -4,6 +4,7 @@ export enum BatchProgressStatus {
     Waiting = 1, // Task is waiting to be processed
     Processing = 2, // Task is currently being processed
     Finished = 3, // Task has been completed
+    Canceled = 4, // Task has been canceled by the system
 }
 
 export enum BatchProgressSpeedType {
