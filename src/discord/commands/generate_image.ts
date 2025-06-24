@@ -37,31 +37,11 @@ export class GenerateImageCommand implements Command {
 
                 await interaction.showModal(modal);
 
+                // const result = await interaction.awaitModalSubmit({ filter: ({ customId }) => customId === 'generate-image', time: 60_000 });
+                // await this.submit(result);
+
             } else if (interaction.isModalSubmit()) {
-                await interaction.deferReply({});
-
-                const presets = await this.dependency.imageGenerationAIService.getPresets();
-                const preset = presets.find(({ is_default }) => is_default) || presets[0];
-                if (!preset) {
-                    throw new Error('No default preset found');
-                }
-
-                const prompt = interaction.fields.getTextInputValue(customID.prompt);
-
-                const imageURLs = await this.dependency.imageGenerationAIService.generateImage(prompt, preset, async (status, process) => {
-                    switch (status) {
-                        case BatchProgressStatus.Waiting:
-                            await interaction.editReply({ content: `Waiting...` });
-                            break;
-                        case BatchProgressStatus.Processing:
-                            await interaction.editReply({ content: `Completed ${process}%` });
-                            break;
-                        case BatchProgressStatus.Canceled:
-                            throw new Error('Image generation was canceled');
-                    }
-                })
-
-                await interaction.editReply({ content: `**prompt**: ${prompt}\n${imageURLs.join('\n')}` });
+                await this.submit(interaction);
             }
 
         } catch (error) {
@@ -73,6 +53,32 @@ export class GenerateImageCommand implements Command {
             }
             await interaction.followUp({ flags, content: `${error}` });
         }
+    }
 
+    async submit(interaction: ModalSubmitInteraction<CacheType>) {
+        await interaction.deferReply({});
+
+        const presets = await this.dependency.imageGenerationAIService.getPresets();
+        const preset = presets.find(({ is_default }) => is_default) || presets[0];
+        if (!preset) {
+            throw new Error('No default preset found');
+        }
+
+        const prompt = interaction.fields.getTextInputValue(customID.prompt);
+
+        const imageURLs = await this.dependency.imageGenerationAIService.generateImage(prompt, preset, async (status, process) => {
+            switch (status) {
+                case BatchProgressStatus.Waiting:
+                    await interaction.editReply({ content: `Waiting...` });
+                    break;
+                case BatchProgressStatus.Processing:
+                    await interaction.editReply({ content: `Completed ${process}%` });
+                    break;
+                case BatchProgressStatus.Canceled:
+                    throw new Error('Image generation was canceled');
+            }
+        })
+
+        await interaction.editReply({ content: `**prompt**: ${prompt}\n${imageURLs.join('\n')}` });
     }
 }
