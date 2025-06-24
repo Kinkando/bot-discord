@@ -1,4 +1,4 @@
-import { ActionRowBuilder, CacheType, ChatInputCommandInteraction, CommandInteractionOptionResolver, MessageContextMenuCommandInteraction, MessageFlags, ModalBuilder, ModalSubmitInteraction, SlashCommandBuilder, TextInputBuilder, TextInputStyle, UserContextMenuCommandInteraction } from "discord.js";
+import { ActionRowBuilder, CacheType, ChatInputCommandInteraction, MessageContextMenuCommandInteraction, MessageFlags, ModalBuilder, ModalSubmitInteraction, SlashCommandBuilder, TextInputBuilder, TextInputStyle, UserContextMenuCommandInteraction } from "discord.js";
 import { Command, CommandDependency } from ".";
 import { BatchProgressStatus } from "../../types/image_generation_ai";
 
