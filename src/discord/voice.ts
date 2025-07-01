@@ -1,18 +1,18 @@
 import { VoiceState } from 'discord.js';
-import { joinVoiceChannel, DiscordGatewayAdapterCreator, VoiceConnectionStatus } from '@discordjs/voice';
+import { joinVoiceChannel, DiscordGatewayAdapterCreator } from '@discordjs/voice';
 import { audioQueue } from './audio';
 import { config } from "../../config/config";
 import { DiscordService } from '../service/discord';
 
 export const voiceStateUpdate = (discordService: DiscordService) => {
     return async (oldState: VoiceState, newState: VoiceState) => {
-        // Check if a user has joined a voice channel
-        if (!oldState.channelId && newState.channelId && newState.guild.id === config.discord.guildID) {
-            if (!newState.member || newState.member?.user.id === config.discord.botID || newState.member?.user.bot) {
-                return;
-            }
+        try {
+            // Check if a user has joined a voice channel
+            if (!oldState.channelId && newState.channelId && newState.guild.id === config.discord.guildID) {
+                if (!newState.member || newState.member?.user.id === config.discord.botID || newState.member?.user.bot) {
+                    return;
+                }
 
-            try {
                 const channel = newState.channel!;
 
                 const voice = await discordService.getVoiceChannelAudio(newState.member.user.id);
@@ -39,10 +39,10 @@ export const voiceStateUpdate = (discordService: DiscordService) => {
                 }, 500);
 
                 console.log(`${newState.member?.user.username} joined ${channel.name}`);
-
-            } catch (error) {
-                console.error(error);
             }
+
+        } catch (error) {
+            console.error(error);
         }
     }
 }
